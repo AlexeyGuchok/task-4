@@ -53,7 +53,9 @@ export const CreatePage = () => {
       });
       response = await response.json();
       message(response.message);
-      const newData = data.filter((element) => element.id !== response.id);
+      const newData = data.filter(
+        (element) => !response.id.includes(element.id)
+      );
 
       setData(newData);
     } catch (e) {
@@ -113,10 +115,17 @@ export const CreatePage = () => {
   };
 
   const checkboxBlockUsers = (status) => {
-    const newData = data
+    const users = data
       .filter((element) => element.checked)
       .map((element) => element.id);
-    onBlockHandler(newData, status);
+    onBlockHandler(users, status);
+  };
+
+  const deleteAllHandler = () => {
+    const users = data
+      .filter((element) => element.checked)
+      .map((element) => element.id);
+    deleteHandler(users);
   };
 
   return (
@@ -142,7 +151,7 @@ export const CreatePage = () => {
             </a>
           </li>
           <li className="tab red lighten-2">
-            <a className="active" onClick={() => deleteHandler()} href="#">
+            <a className="active" onClick={deleteAllHandler} href="#">
               Удалить
             </a>
           </li>
@@ -210,7 +219,7 @@ export const CreatePage = () => {
                       <a
                         href="#"
                         className="action-button"
-                        onClick={() => deleteHandler(element.id)}
+                        onClick={() => deleteHandler([element.id])}
                       >
                         <img src={deleteIcon} alt="Удалить" title="Удалить" />
                       </a>

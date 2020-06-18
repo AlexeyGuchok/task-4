@@ -20,14 +20,18 @@ router.get("/", async (req, res) => {
 
 router.delete("/delete", async (req, res) => {
   const { id } = req.body;
+  const idsString = id.reduce((acc, element, i) => {
+    if (i < id.length - 1) return acc + element + ",";
+    return acc + element;
+  }, "");
   try {
-    await router.conn.query(`DELETE FROM users WHERE id = "${id}" `, function (
-      err,
-      result
-    ) {
-      if (err) console.log(err);
-      return res.status(201).json({ message: "Пользователь Удален", id: id });
-    });
+    await router.conn.query(
+      `DELETE FROM users  WHERE id IN (${idsString})`,
+      function (err, result) {
+        if (err) console.log(err);
+        return res.status(201).json({ message: "Пользователь Удален", id: id });
+      }
+    );
   } catch (e) {
     return res
       .status(500)
