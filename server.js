@@ -21,10 +21,12 @@ const linkRoutes = require("./routes/link.routes");
 
 app.use("/api/auth", authRoutes);
 app.use("/api/link", isAuthWithConn, linkRoutes);
+console.log(process.env.NODE_ENV);
 
 if (process.env.NODE_ENV == "production") {
-  app.use("/", express.static(path.join(__dirname, "client", "biuld")));
-  app.get("*", (req, res) => {
+  app.use(express.static("client/build"));
+  // app.use("/static", express.static(path.join(__dirname, "client", "biuld")));
+  app.get("/", (req, res) => {
     res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
   });
 }
