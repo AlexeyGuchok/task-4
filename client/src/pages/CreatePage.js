@@ -191,10 +191,7 @@ export const CreatePage = () => {
                 ("0" + (d.getMonth() + 1)).slice(-2) +
                 "-" +
                 d.getFullYear() +
-                " " +
-                ("0" + d.getHours()).slice(-2) +
-                ":" +
-                ("0" + d.getMinutes()).slice(-2);
+                " ";
               return (
                 <tr key={element.id}>
                   <td>

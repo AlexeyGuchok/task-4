@@ -1,14 +1,22 @@
 const express = require("express");
 const config = require("./client/src/config/default");
-const mysql = require("mysql2/promise");
+// const mysql = require("mysql2/promise");
+
+const db = require("./database/database");
 const cors = require("cors");
 const app = express();
 const path = require("path");
 const isAuth = require("./middleware/auth.middleware");
+const User = require("./models/User");
+
+// let globalconn;
+// const isAuthWithConn = (req, res, next) => {
+//   return isAuth(req, res, next, globalconn);
+// };
 
 let globalconn;
 const isAuthWithConn = (req, res, next) => {
-  return isAuth(req, res, next, globalconn);
+  return isAuth(req, res, next, db);
 };
 
 app.use(cors());
@@ -21,11 +29,9 @@ const linkRoutes = require("./routes/link.routes");
 
 app.use("/api/auth", authRoutes);
 app.use("/api/link", isAuthWithConn, linkRoutes);
-console.log(process.env.NODE_ENV);
 
 if (process.env.NODE_ENV == "production") {
   app.use(express.static("client/build"));
-  // app.use("/static", express.static(path.join(__dirname, "client", "biuld")));
   app.get("/", (req, res) => {
     res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
   });
@@ -33,29 +39,30 @@ if (process.env.NODE_ENV == "production") {
 
 async function start() {
   try {
-    const conn = await mysql.createConnection({
-      database: "users",
-      host: "localhost",
-      user: "root",
-      password: "",
-    });
+    // const conn = await mysql.createConnection({
+    //   database: "users",
+    //   host: "localhost",
+    //   user: "root",
+    //   password: "",
+    // });
 
-    globalconn = conn;
+    // globalconn = conn;
 
-    authRoutes.conn = conn;
-    linkRoutes.conn = conn;
+    // authRoutes.conn = conn;
+    // linkRoutes.conn = conn;
 
-    app.listen(PORT, () => console.log(`Стартануло на ${PORT}`));
+    db.authenticate()
+      .then(() => {
+        console.log("Connection has been established successfully.");
+      })
+      .catch((err) => {
+        console.error("Unable to connect to the database:", err);
+      });
+
+    app.listen(PORT, () => console.log(`PORT: ${PORT}`));
   } catch (e) {
     console.log("Error, ", e.message);
   }
 }
-app.get("/", function (req, res) {
-  // globalconn.execute("SELECT * FROM users", function (error, result) {
-  conn.execute("SELECT * FROM users", function (error, result) {
-    if (error) throw error;
-    console.log(result);
-  });
-});
 
 start();

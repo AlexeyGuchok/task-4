@@ -20,6 +20,7 @@
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "cli": "^1.0.1",
     "config": "^3.3.1",
     "cors": "^2.8.5",
     "crossenv": "0.0.2-security",
@@ -29,7 +30,8 @@
     "jsonwebtoken": "^8.5.1",
     "mysql": "^2.18.1",
     "mysql2": "^2.1.0",
-    "sequelize": "^5.21.12",
+    "sequelize": "^5.21.13",
+    "sequelize-cli": "^5.5.1",
     "shortid": "^2.2.15"
   },
   "devDependencies": {
