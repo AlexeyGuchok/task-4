@@ -49,24 +49,24 @@ router.put("/block", async (req, res) => {
   }, "");
 
   try {
-    // await router.conn.query(
-    //   `UPDATE users SET status = ${status ? 1 : 0} WHERE id IN (${idsString})`,
-    //   function (err, result) {
-    //     if (err) {
-    //       console.log(err);
-    //       return res.status(500).json({ message: err });
-    //     }
-    //     if (result) {
-    //       return res.status(201).json({
-    //         message: `Пользовате(ль/ли) ${
-    //           status ? "Блокирован(/ны)" : "Разблокирован(/ны)"
-    //         }`,
-    //         ids: id,
-    //         status: status,
-    //       });
-    //     }
-    //   }
-    // );
+      // await router.conn.query(
+      //   `UPDATE users SET status = ${status ? 1 : 0} WHERE id IN (${idsString})`,
+      //   function (err, result) {
+      //     if (err) {
+      //       console.log(err);
+      //       return res.status(500).json({ message: err });
+      //     }
+      //     if (result) {
+      //       return res.status(201).json({
+      //         message: `Пользовате(ль/ли) ${
+      //           status ? "Блокирован(/ны)" : "Разблокирован(/ны)"
+      //         }`,
+      //         ids: id,
+      //         status: status,
+      //       });
+      //     }
+      //   }
+      // );
     status = status ? 1 : 0;
     await User.update({
       status: status,
