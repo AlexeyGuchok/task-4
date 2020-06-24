@@ -8,8 +8,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
-    "postinstall": "npm install && npm run install && npm run build && cross-env NODE_ENV=production",
+    "start": "npm install && npm run install && npm run build && cross-env NODE_ENV=production node server.js",
     "server": "nodemon server.js",
     "client": "npm run start --prefix client",
     "install": "npm install --prefix client",
