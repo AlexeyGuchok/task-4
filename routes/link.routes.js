@@ -5,13 +5,6 @@ const User = require("../models/User");
 
 router.get("/", async (req, res) => {
   try {
-    // const [users] = await router.conn.query(
-    //   `SELECT id, name, surname, email, registration, last, status FROM users`,
-    //   function (error, result) {
-    //     if (error) console.log(error);
-    //     return res.json({ users: result });
-    //   }
-    // );
     const result = await User.findAll({});
     return res.json({ users: result });
   } catch (e) {
@@ -49,32 +42,27 @@ router.put("/block", async (req, res) => {
   }, "");
 
   try {
-      // await router.conn.query(
-      //   `UPDATE users SET status = ${status ? 1 : 0} WHERE id IN (${idsString})`,
-      //   function (err, result) {
-      //     if (err) {
-      //       console.log(err);
-      //       return res.status(500).json({ message: err });
-      //     }
-      //     if (result) {
-      //       return res.status(201).json({
-      //         message: `Пользовате(ль/ли) ${
-      //           status ? "Блокирован(/ны)" : "Разблокирован(/ны)"
-      //         }`,
-      //         ids: id,
-      //         status: status,
-      //       });
-      //     }
-      //   }
-      // );
-    status = status ? 1 : 0;
-    await User.update({
-      status: status,
-      where: {
-        id: [idsString],
+    const result = await User.update(
+      {
+        status: status ? 1 : 0,
       },
-    });
+      {
+        where: {
+          id: [idsString],
+        },
+      }
+    );
+    if (result) {
+      return res.status(201).json({
+        message: `Пользовате(ль/ли) ${
+          status ? "Блокирован(/ны)" : "Разблокирован(/ны)"
+        }`,
+        ids: id,
+        status: status,
+      });
+    }
   } catch (e) {
+    console.log(e);
     return res
       .status(500)
       .json({ message: "Что-то пошло не так. попробуйте снова" });

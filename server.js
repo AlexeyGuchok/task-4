@@ -1,7 +1,5 @@
 const express = require("express");
 const config = require("./client/src/config/default");
-// const mysql = require("mysql2/promise");
-
 const db = require("./database/database");
 const cors = require("cors");
 const app = express();
@@ -9,10 +7,6 @@ const path = require("path");
 const isAuth = require("./middleware/auth.middleware");
 const User = require("./models/User");
 
-// let globalconn;
-// const isAuthWithConn = (req, res, next) => {
-//   return isAuth(req, res, next, globalconn);
-// };
 
 let globalconn;
 const isAuthWithConn = (req, res, next) => {
@@ -39,18 +33,6 @@ if (process.env.NODE_ENV == "production") {
 
 async function start() {
   try {
-    // const conn = await mysql.createConnection({
-    //   database: "users",
-    //   host: "localhost",
-    //   user: "root",
-    //   password: "",
-    // });
-
-    // globalconn = conn;
-
-    // authRoutes.conn = conn;
-    // linkRoutes.conn = conn;
-
     db.authenticate()
       .then(() => {
         console.log("Connection has been established successfully.");
